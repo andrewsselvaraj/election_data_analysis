@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dharapuram_101_streetwise</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --surface-2:      #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --accent:         #2a78d6;
+    --accent-bg:      rgba(42,120,214,0.10);
+    --chip-bg:        #f0efec;
+    --mark-bg:        #fff4b8;
+    /* dataviz skill's validated default categorical palette (slots 1-5,
+       fixed order -- passes adjacent-pair colorblind-safety checks) */
+    --rank-1: #2a78d6;  /* blue   */
+    --rank-2: #eb6834;  /* orange */
+    --rank-3: #1baf7a;  /* aqua   */
+    --rank-4: #eda100;  /* yellow */
+    --rank-5: #e87ba4;  /* magenta */
+    --rank-other: #c3c2b7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --surface-2:      #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --accent:         #3987e5;
+      --accent-bg:      rgba(57,135,229,0.16);
+      --chip-bg:        #26261f;
+      --mark-bg:        #4a4322;
+      --rank-other: #383835;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --surface-2:      #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --accent:         #3987e5;
+    --accent-bg:      rgba(57,135,229,0.16);
+    --chip-bg:        #26261f;
+    --mark-bg:        #4a4322;
+    --rank-other: #383835;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--surface-2);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  body { padding: 16px; }
+  .wrap { max-width: 1220px; margin: 0 auto; }
+
+  header.page {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
+  }
+  header.page h1 { font-size: 19px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  header.page p.sub { margin: 0; color: var(--text-secondary); font-size: 12.5px; }
+  .theme-toggle {
+    border: 1px solid var(--border); background: var(--surface-1);
+    color: var(--text-secondary); border-radius: 8px; padding: 7px 12px;
+    font-size: 13px; cursor: pointer;
+  }
+  .theme-toggle:hover { color: var(--text-primary); }
+
+  .toolbar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .toolbar input[type=text] {
+    flex: 1 1 280px; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface-1); color: var(--text-primary); font-size: 13px;
+  }
+  .toolbar input[type=text]:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .toolbar .count { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+
+  .legend-card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: var(--text-secondary);
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .legend-card .swatches { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .legend-card .sw { display: inline-flex; align-items: center; gap: 5px; }
+  .legend-card .sw i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+  .legend-card .note { color: var(--text-muted); }
+
+  .axis-caption {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 10.5px; color: var(--text-muted); padding: 0 4px 4px;
+    border-bottom: 1px solid var(--gridline); margin-bottom: 2px;
+  }
+  .axis-caption .ticks { display: grid; grid-template-columns: repeat(4, 1fr); width: 320px; text-align: right; }
+  .axis-caption .ticks span:first-child { text-align: left; }
+
+  table.report {
+    width: 100%; border-collapse: collapse; background: var(--surface-1);
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+  }
+  table.report thead th {
+    text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: .03em;
+    color: var(--text-muted); padding: 9px 10px; background: var(--surface-1);
+    border-bottom: 1px solid var(--gridline); position: sticky; top: 0;
+  }
+  table.report tbody td {
+    padding: 10px; border-bottom: 1px solid var(--gridline); vertical-align: top; font-size: 12.5px;
+  }
+  table.report tbody tr:last-child td { border-bottom: none; }
+  table.report tbody tr:nth-child(even) { background: color-mix(in srgb, var(--surface-2) 45%, transparent); }
+
+  td.col-station { width: 190px; font-weight: 600; }
+  td.col-station .dup { display: inline-block; margin-top: 4px; font-size: 10px; font-weight: 500; color: var(--accent); border: 1px solid var(--accent); border-radius: 5px; padding: 1px 5px; }
+  td.col-streets { width: 230px; color: var(--text-secondary); font-size: 11.5px; line-height: 1.5; }
+  td.col-streets .more { color: var(--text-muted); cursor: pointer; text-decoration: underline dotted; }
+  td.col-chart { min-width: 380px; }
+
+  .cand-row { display: grid; grid-template-columns: 150px 1fr 60px; align-items: center; gap: 8px; padding: 2px 0; }
+  .cand-row .who { font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cand-row .who .party { display: block; font-size: 9.5px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cand-row.other .who, .cand-row.other .party { color: var(--text-muted); }
+  .track {
+    position: relative; width: 320px; height: 13px; background: var(--surface-2); border-radius: 3px;
+    background-image: linear-gradient(to right, var(--gridline) 1px, transparent 1px);
+    background-size: calc(320px / 3) 100%;
+  }
+  .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; }
+  .cand-row .votes { text-align: right; font-size: 11.5px; font-variant-numeric: tabular-nums; color: var(--text-secondary); }
+  .cand-row.other .votes { color: var(--text-muted); }
+
+  mark { background: var(--mark-bg); color: inherit; border-radius: 2px; padding: 0 1px; }
+  .no-results { padding: 26px; text-align: center; color: var(--text-muted); font-size: 13px; }
+  .footnote { font-size: 11.5px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .theme-toggle, .toolbar { display: none; }
+    table.report { border: none; }
+    tr { break-inside: avoid; }
+  }
+
+  @media (max-width: 900px) {
+    td.col-chart, .track { min-width: 220px; }
+    .track { width: 220px; background-size: calc(220px / 3) 100%; }
+    .axis-caption .ticks { width: 220px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <div>
+      <h1 id="title">dharapuram_101_streetwise</h1>
+      <p class="sub" id="subtitle">101. Dharapuram (SC) Assembly Constituency — booth-wise candidate result &amp; covered streets</p>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button">🌓 Toggle theme</button>
+  </header>
+
+  <div class="legend-card">
+    <span>Colour key (top 5 candidates by votes, per booth):</span>
+    <span class="swatches" id="legendSwatches"></span>
+    <span class="note">Ranks 6–10 shown unfilled — same 5-colour set as the source Tableau report.</span>
+  </div>
+
+  <div class="toolbar">
+    <input id="searchInput" type="text" placeholder="Filter by street, polling station, booth number or candidate…" autocomplete="off">
+    <span class="count" id="countLabel"></span>
+  </div>
+
+  <div class="axis-caption">
+    <span>Polling station / covered streets</span>
+    <span class="ticks"><span>0</span><span>200</span><span>400</span><span>600</span></span>
+  </div>
+
+  <table class="report">
+    <thead>
+      <tr>
+        <th style="width:190px">Polling station</th>
+        <th style="width:230px">Covered streets</th>
+        <th>Candidate — Party — Votes received</th>
+      </tr>
+    </thead>
+    <tbody id="reportBody"></tbody>
+  </table>
+
+  <div class="footnote" id="footnote"></div>
+</div>
+
+<script id="data-json" type="application/json">__DATA_JSON__</script>
+<script>
+(function() {
+  const DATA = JSON.parse(document.getElementById('data-json').textContent);
+  const booths = DATA.booths;
+  const RANK_COLORS = ['var(--rank-1)','var(--rank-2)','var(--rank-3)','var(--rank-4)','var(--rank-5)'];
+  const AXIS_MAX = 600;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function highlight(text, q) {
+    if (!q) return esc(text);
+    const idx = text.toLowerCase().indexOf(q.toLowerCase());
+    if (idx === -1) return esc(text);
+    return esc(text.slice(0, idx)) + '<mark>' + esc(text.slice(idx, idx + q.length)) + '</mark>' + esc(text.slice(idx + q.length));
+  }
+
+  document.getElementById('title').textContent = DATA.constituency.replace(/^\d+\.\s*/, '') + ' — street-wise report';
+  document.getElementById('legendSwatches').innerHTML = ['1st','2nd','3rd','4th','5th'].map(function(lbl, i) {
+    return '<span class="sw"><i style="background:' + RANK_COLORS[i] + '"></i>' + lbl + '</span>';
+  }).join('');
+  document.getElementById('footnote').innerHTML =
+    'Votes are recorded at booth level (Form 20) — a street search finds the booth(s) whose electoral-roll area covers ' +
+    'that street. Party affiliations are not listed anywhere in this constituency’s Form 20 source, so party is shown ' +
+    'blank. Axis fixed at 0–' + AXIS_MAX + ' votes across every booth so bar lengths are comparable booth to booth. ' +
+    'Colours use the dataviz style guide’s validated default categorical palette (fixed order, checked for ' +
+    'colour-blind-safe adjacent-pair separation); every bar also keeps a direct text label so identity never depends ' +
+    'on colour alone.';
+
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn.addEventListener('click', function() {
+    const root = document.documentElement;
+    const cur = root.getAttribute('data-theme');
+    if (cur === 'dark') root.setAttribute('data-theme', 'light');
+    else if (cur === 'light') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme', 'dark');
+  });
+
+  function candidateRowsHtml(booth, q) {
+    return booth.candidates.map(function(c, i) {
+      const isTop = i < 5;
+      const pct = Math.min((c.votes / AXIS_MAX) * 100, 100);
+      const color = isTop ? RANK_COLORS[i] : 'var(--rank-other)';
+      return '<div class="cand-row' + (isTop ? '' : ' other') + '">' +
+        '<div class="who">' + highlight(c.name, q) + '<span class="party">' + esc(c.party) + '</span></div>' +
+        '<div class="track"><div class="fill" style="width:' + pct.toFixed(1) + '%;background:' + color + '"></div></div>' +
+        '<div class="votes">' + c.votes.toLocaleString() + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function matches(b, q) {
+    if (!q) return true;
+    const needle = q.toLowerCase();
+    if (b.booth_no.toLowerCase().indexOf(needle) !== -1) return true;
+    if (b.polling_station_name.toLowerCase().indexOf(needle) !== -1) return true;
+    if (b.streets.some(function(s) { return s.toLowerCase().indexOf(needle) !== -1; })) return true;
+    if (b.candidates.some(function(c) { return c.name.toLowerCase().indexOf(needle) !== -1; })) return true;
+    return false;
+  }
+
+  const tbody = document.getElementById('reportBody');
+  const searchInput = document.getElementById('searchInput');
+  const countLabel = document.getElementById('countLabel');
+
+  function render() {
+    const q = searchInput.value.trim();
+    const results = booths.filter(function(b) { return matches(b, q); });
+    countLabel.textContent = q ? results.length + ' of ' + booths.length + ' booths' : 'All ' + booths.length + ' booths';
+
+    if (results.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" class="no-results">No booths match “' + esc(q) + '”.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = results.map(function(b) {
+      const dup = b.dup_label !== b.booth_no ? '<span class="dup">' + esc(b.dup_label.replace(b.booth_no, '').trim()) + '</span>' : '';
+      const streetsHtml = b.streets.map(function(s) { return highlight(s, q); }).join('; ');
+      return '<tr>' +
+        '<td class="col-station">' + esc(b.booth_no) + ' — ' + highlight(b.polling_station_name, q) + dup + '</td>' +
+        '<td class="col-streets">' + streetsHtml + '</td>' +
+        '<td class="col-chart">' + candidateRowsHtml(b, q) + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  let debounceTimer = null;
+  searchInput.addEventListener('input', function() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(render, 90);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
