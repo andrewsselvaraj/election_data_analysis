@@ -136,6 +136,8 @@
   td.col-streets { width: 230px; color: var(--text-secondary); font-size: 11.5px; line-height: 1.5; }
   td.col-streets .more { color: var(--text-muted); cursor: pointer; text-decoration: underline dotted; }
   td.col-chart { min-width: 380px; }
+  .chart-total { font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
+  .chart-total b { color: var(--text-primary); }
 
   .cand-row { display: grid; grid-template-columns: 150px 1fr 60px; align-items: center; gap: 8px; padding: 2px 0; }
   .cand-row .who { font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -250,7 +252,7 @@
   });
 
   function candidateRowsHtml(booth, q) {
-    return booth.candidates.map(function(c, i) {
+    const rows = booth.candidates.map(function(c, i) {
       const isTop = i < 5;
       const pct = Math.min((c.votes / AXIS_MAX) * 100, 100);
       const color = isTop ? RANK_COLORS[i] : 'var(--rank-other)';
@@ -260,6 +262,8 @@
         '<div class="votes">' + c.votes.toLocaleString() + '</div>' +
       '</div>';
     }).join('');
+    const total = '<div class="chart-total">Total valid votes: <b>' + booth.total_votes.toLocaleString() + '</b></div>';
+    return total + rows;
   }
 
   function matches(b, q) {
