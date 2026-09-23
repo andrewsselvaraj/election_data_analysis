@@ -60,14 +60,14 @@
   html, body { margin: 0; padding: 0; background: var(--surface-2); color: var(--text-primary);
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
   body { padding: 16px; }
-  .wrap { max-width: 1240px; margin: 0 auto; }
+  .wrap { max-width: 1280px; margin: 0 auto; }
 
   header.page { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
     margin-bottom: 14px; flex-wrap: wrap; }
   header.page .badge-tvk { display: inline-block; background: var(--tvk); color: var(--tvk-ink);
     font-weight: 700; font-size: 11px; letter-spacing: .04em; padding: 3px 8px; border-radius: 6px; margin-bottom: 6px; }
   header.page h1 { font-size: 19px; margin: 0 0 4px; letter-spacing: -0.01em; }
-  header.page p.sub { margin: 0; color: var(--text-secondary); font-size: 12.5px; max-width: 720px; }
+  header.page p.sub { margin: 0; color: var(--text-secondary); font-size: 12.5px; max-width: 760px; }
   .theme-toggle { border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary);
     border-radius: 8px; padding: 7px 12px; font-size: 13px; cursor: pointer; }
 
@@ -108,42 +108,39 @@
   .toolbar select { padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text-primary); font-size: 12.5px; }
   .meta { font-size: 12px; color: var(--text-muted); margin: 8px 2px 10px; }
 
-  table.plan { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-  table.plan th { text-align: left; color: var(--text-muted); font-weight: 600; font-size: 10.5px; text-transform: uppercase;
-    letter-spacing: .03em; padding: 8px 9px; border-bottom: 1px solid var(--gridline); cursor: pointer; }
-  table.plan th:hover { color: var(--text-primary); }
-  table.plan td { padding: 9px; border-bottom: 1px solid var(--gridline); vertical-align: top; }
-  table.plan tbody tr.booth-row { cursor: pointer; }
-  table.plan tbody tr.booth-row:hover { background: var(--surface-2); }
-  table.plan td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  td.streets-cell { max-width: 260px; color: var(--text-secondary); font-size: 11.5px; }
-  td.streets-cell .street-list { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  table.combined { width: 100%; border-collapse: collapse; background: var(--surface-1);
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  table.combined thead th { text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: .03em;
+    color: var(--text-muted); padding: 9px 10px; background: var(--surface-1); border-bottom: 1px solid var(--gridline);
+    cursor: pointer; }
+  table.combined thead th:hover { color: var(--text-primary); }
+  table.combined tbody td { padding: 10px; border-bottom: 1px solid var(--gridline); vertical-align: top; font-size: 12.5px; }
+  table.combined tbody tr:last-child td { border-bottom: none; }
+  table.combined tbody tr:nth-child(even) { background: color-mix(in srgb, var(--surface-2) 45%, transparent); }
 
-  .status-badge { display: inline-block; border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  td.col-station { width: 210px; }
+  td.col-station .booth-title { font-weight: 700; margin-bottom: 4px; }
+  td.col-station .dup { display: inline-block; margin-top: 4px; font-size: 10px; font-weight: 500; color: var(--text-muted); border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px; }
+  td.col-station .stat-line { font-size: 11px; color: var(--text-secondary); margin-top: 6px; }
+  td.col-station .stat-line b { color: var(--text-primary); }
+  td.col-streets { width: 230px; color: var(--text-secondary); font-size: 11.5px; line-height: 1.5; }
+  td.col-chart { min-width: 420px; }
+
+  .status-badge { display: inline-block; border-radius: 999px; padding: 3px 10px; font-size: 10.5px; font-weight: 600; white-space: nowrap; }
   .status-badge.stronghold { background: var(--status-stronghold-bg); color: var(--status-stronghold-fg); }
   .status-badge.battleground { background: var(--status-battleground-bg); color: var(--status-battleground-fg); }
   .status-badge.needswork { background: var(--status-needswork-bg); color: var(--status-needswork-fg); }
 
-  .mini-bar-wrap { display: flex; align-items: center; gap: 8px; }
-  .mini-bar { display: flex; height: 10px; width: 120px; border-radius: 3px; overflow: hidden; background: var(--surface-2); flex: none; }
-  .mini-bar span { display: block; height: 100%; }
-  .mini-bar-total { font-size: 11px; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .mini-bar-total b { color: var(--text-primary); }
-
-  tr.detail-row td { background: var(--surface-2); padding: 14px 16px; }
-  .detail-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; }
-  @media (max-width: 820px) { .detail-grid { grid-template-columns: 1fr; } .kpi-row { grid-template-columns: repeat(2,1fr); } }
-  .detail-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-  .detail-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
-  .bar-row { display: grid; grid-template-columns: 150px 1fr 70px; align-items: center; gap: 8px; padding: 3px 0; }
-  .bar-row .who { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .bar-row .who .party { display: block; font-size: 10.5px; color: var(--text-muted); }
-  .bar-track { position: relative; height: 13px; background: var(--surface-1); border-radius: 3px; }
-  .bar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; }
-  .bar-row .votes { text-align: right; font-size: 11.5px; font-variant-numeric: tabular-nums; color: var(--text-secondary); }
-  .street-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .chip { background: var(--chip-bg); color: var(--text-secondary); border-radius: 999px; padding: 3px 10px; font-size: 11.5px; }
-  .chip.hit { background: var(--mark-bg); color: var(--text-primary); }
+  .chart-total { font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
+  .chart-total b { color: var(--text-primary); }
+  .cand-row { display: grid; grid-template-columns: 170px 1fr 60px; align-items: center; gap: 8px; padding: 2px 0; }
+  .cand-row .who { font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cand-row .who .party { display: block; color: var(--text-muted); font-size: 9.5px; }
+  .cand-row.other .who, .cand-row.other .party { color: var(--text-muted); }
+  .track { position: relative; height: 13px; background: var(--surface-2); border-radius: 3px; }
+  .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; }
+  .cand-row .votes { text-align: right; font-size: 11.5px; font-variant-numeric: tabular-nums; color: var(--text-secondary); }
+  .cand-row.other .votes { color: var(--text-muted); }
 
   mark { background: var(--mark-bg); color: inherit; border-radius: 2px; padding: 0 1px; }
   .footnote { font-size: 11.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.6; }
@@ -154,12 +151,12 @@
     .theme-toggle, .toolbar { display: none; }
     section.card { border: none; }
     tr { break-inside: avoid; }
-    /* keep the plan overview -- KPIs, three-way race, status breakdown --
-       together on the front page(s), ahead of the booth-by-booth table */
-    header.page, .kpi-row, section.card:nth-of-type(1), section.card:nth-of-type(2) {
-      break-inside: avoid;
-    }
+    header.page, .kpi-row, section.card:nth-of-type(1), section.card:nth-of-type(2) { break-inside: avoid; }
     section.card:nth-of-type(3) { break-before: page; }
+  }
+  @media (max-width: 900px) {
+    td.col-chart { min-width: 260px; }
+    .kpi-row { grid-template-columns: repeat(2,1fr); }
   }
 </style>
 </head>
@@ -169,7 +166,7 @@
     <div>
       <span class="badge-tvk">TVK CAMPAIGN PLAN</span>
       <h1 id="title">Booth-Level Strategy — Madurantakam (AC 035)</h1>
-      <p class="sub">Every booth classified from Tamilaga Vettri Kazhagam's point of view: where TVK already leads (defend), where the race is close (contest hard), and where it trails badly (lower priority) — to help target ground-campaign resources by street.</p>
+      <p class="sub">Every booth from Tamilaga Vettri Kazhagam's point of view — polling station, covered streets and full candidate result combined into one row: where TVK already leads (defend), where the race is close (contest hard), and where it trails badly (lower priority).</p>
     </div>
     <button class="theme-toggle" id="themeToggle" type="button">🌓 Toggle theme</button>
   </header>
@@ -195,12 +192,12 @@
   </section>
 
   <section class="card">
-    <h2>Booth-by-booth plan
+    <h2>Booth · polling station · covered streets · full result
       <span class="hint">Sorted by action priority by default — battlegrounds first, weakest strongholds next</span>
     </h2>
     <div class="toolbar">
       <div class="search-box" style="flex:1 1 300px">
-        <input id="searchInput" type="text" placeholder="Filter by street, polling station, booth number…" autocomplete="off">
+        <input id="searchInput" type="text" placeholder="Filter by street, polling station, booth number, candidate…" autocomplete="off">
       </div>
       <select id="statusFilter">
         <option value="">All statuses</option>
@@ -210,23 +207,16 @@
       </select>
     </div>
     <div class="meta" id="meta"></div>
-    <div style="overflow-x:auto">
-      <table class="plan">
-        <thead>
-          <tr>
-            <th data-sort="priority" style="width:60px">Booth</th>
-            <th data-sort="polling_station_name">Polling station</th>
-            <th data-sort="streets">Covered streets</th>
-            <th data-sort="status" style="width:110px">Status</th>
-            <th data-sort="tvk_pct" class="num" style="width:80px">TVK share</th>
-            <th data-sort="gap_pct" class="num" style="width:90px">Gap to lead</th>
-            <th data-sort="leader_name" style="width:170px">Leading candidate</th>
-            <th style="width:220px">DMK / AIADMK / TVK</th>
-          </tr>
-        </thead>
-        <tbody id="planBody"></tbody>
-      </table>
-    </div>
+    <table class="combined">
+      <thead>
+        <tr>
+          <th data-sort="priority" style="width:210px">Booth / polling station</th>
+          <th data-sort="streets" style="width:230px">Covered streets</th>
+          <th>Full candidate result — votes received</th>
+        </tr>
+      </thead>
+      <tbody id="planBody"></tbody>
+    </table>
     <div class="footnote" id="footnote"></div>
   </section>
 </div>
@@ -237,6 +227,7 @@
   const DATA = JSON.parse(document.getElementById('data-json').textContent);
   const booths = DATA.booths;
   const PARTY_COLOR = { DMK: 'var(--dmk)', AIADMK: 'var(--aiadmk)', TVK: 'var(--tvk)' };
+  const AXIS_MAX = Math.max.apply(null, booths.map(b => b.candidates[0] ? b.candidates[0].votes : 0)) || 1;
 
   function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
   function highlight(text, q) {
@@ -250,7 +241,6 @@
     return 'var(--other)';
   }
 
-  // theme
   document.getElementById('themeToggle').addEventListener('click', function() {
     const root = document.documentElement, cur = root.getAttribute('data-theme');
     if (cur === 'dark') root.setAttribute('data-theme', 'light');
@@ -291,21 +281,32 @@
     '<div class="status-chip needswork"><b>' + sc.needswork + '</b> Needs-work booths — trailing &gt;15 pts, lower near-term priority</div>';
 
   document.getElementById('footnote').innerHTML =
-    'Gap to lead = percentage-point gap between TVK and whichever candidate is currently leading that booth (shown as a negative "cushion" ' +
-    'when TVK itself is leading). Party colours: DMK red, AIADMK saffron, TVK yellow, all other candidates (Independents, NOTA, minor parties) ' +
-    'shown muted since this view is built specifically for TVK planning, not a general result browser — see the constituency dashboard for the ' +
-    'full unweighted candidate breakdown. Votes are recorded at booth level (Form 20); a street search finds the booth(s) whose electoral-roll ' +
-    'area covers that street. Booth 218 has two source records in Form 20 (a zero-vote row and the real result); both are listed.';
+    'Gap to lead = percentage-point gap between TVK and whichever candidate is currently leading that booth (shown as a "cushion" when TVK ' +
+    'itself is leading). Party colours: DMK red, AIADMK saffron, TVK yellow, all other candidates (Independents, NOTA, minor parties) shown ' +
+    'muted. Votes are recorded at booth level (Form 20) — a street search finds the booth(s) whose electoral-roll area covers that street. ' +
+    'Booth 218 has two source records in Form 20 (a zero-vote row and the real result); both are listed.';
 
-  // table
+  function statusLabel(s) { return s === 'stronghold' ? 'Stronghold' : s === 'battleground' ? 'Battleground' : 'Needs work'; }
+
+  function candidateRowsHtml(b, q) {
+    const rowsHtml = b.candidates.map(c => {
+      const isMajor = !!c.party_code;
+      const pct = Math.max((c.votes / AXIS_MAX) * 100, c.votes > 0 ? 1.5 : 0);
+      return '<div class="cand-row' + (isMajor ? '' : ' other') + '">' +
+        '<div class="who">' + highlight(c.name, q) + '<span class="party">' + esc(c.party || '') + '</span></div>' +
+        '<div class="track"><div class="fill" style="width:' + pct.toFixed(1) + '%;background:' + colorFor(c) + '"></div></div>' +
+        '<div class="votes">' + c.votes.toLocaleString() + '</div>' +
+      '</div>';
+    }).join('');
+    const total = '<div class="chart-total">Total valid votes: <b>' + b.total_votes.toLocaleString() + '</b></div>';
+    return total + rowsHtml;
+  }
+
   const tbody = document.getElementById('planBody');
   const searchInput = document.getElementById('searchInput');
   const statusFilter = document.getElementById('statusFilter');
   const meta = document.getElementById('meta');
-  let openIndex = null;
   let sortKey = 'priority', sortDir = 1;
-
-  function statusLabel(s) { return s === 'stronghold' ? 'Stronghold' : s === 'battleground' ? 'Battleground' : 'Needs work'; }
 
   function matches(b, q) {
     if (!q) return true;
@@ -313,46 +314,13 @@
     if (b.booth_no.toLowerCase().includes(needle)) return true;
     if (b.polling_station_name.toLowerCase().includes(needle)) return true;
     if (b.streets.some(s => s.toLowerCase().includes(needle))) return true;
+    if (b.candidates.some(c => c.name.toLowerCase().includes(needle))) return true;
     return false;
   }
   function sortVal(b, key) {
     if (key === 'booth_no') return parseInt(b.booth_no, 10);
     if (key === 'streets') return b.streets.length;
     return b[key];
-  }
-
-  function miniBar(b) {
-    const parts = [
-      { v: b.dmk_votes, c: 'var(--dmk)' },
-      { v: b.aiadmk_votes, c: 'var(--aiadmk)' },
-      { v: b.tvk_votes, c: 'var(--tvk)' },
-    ];
-    const partySum = parts.reduce((a, p) => a + p.v, 0) || 1;
-    const bar = '<div class="mini-bar">' + parts.map(p => '<span style="width:' + (p.v/partySum*100).toFixed(1) + '%;background:' + p.c + '"></span>').join('') + '</div>';
-    const total = '<span class="mini-bar-total">Total <b>' + b.total_votes.toLocaleString() + '</b></span>';
-    return '<div class="mini-bar-wrap">' + bar + total + '</div>';
-  }
-
-  function renderDetail(b, q) {
-    const chartId = 'chart-' + b.booth_no + '-' + Math.random().toString(36).slice(2,7);
-    setTimeout(() => {
-      const el = document.getElementById(chartId);
-      if (!el) return;
-      const max = b.candidates[0].votes || 1;
-      el.innerHTML = b.candidates.map(c => {
-        const pct = Math.max(c.votes/max*100, c.votes>0?1.5:0);
-        return '<div class="bar-row"><div class="who">' + esc(c.name) + '<span class="party">' + esc(c.party || '') + '</span></div>' +
-          '<div class="bar-track"><div class="bar-fill" style="width:' + pct.toFixed(1) + '%;background:' + colorFor(c) + '"></div></div>' +
-          '<div class="votes">' + c.votes.toLocaleString() + '</div></div>';
-      }).join('');
-    }, 0);
-    const chips = b.streets.map(s => '<span class="chip' + (q && s.toLowerCase().includes(q.toLowerCase()) ? ' hit' : '') + '">' + esc(s) + '</span>').join('');
-    return '<tr class="detail-row"><td colspan="8"><div class="detail-grid">' +
-      '<div><div class="detail-title">Full candidate result — Booth ' + esc(b.booth_no) + '</div>' +
-      '<div class="detail-sub">' + esc(b.polling_station_name) + ' · ' + b.total_votes.toLocaleString() + ' total valid votes</div>' +
-      '<div id="' + chartId + '"></div></div>' +
-      '<div><div class="detail-title">Streets covered (' + b.streets.length + ')</div><div class="street-chips">' + chips + '</div></div>' +
-      '</div></td></tr>';
   }
 
   function render() {
@@ -368,33 +336,27 @@
     meta.textContent = 'Showing ' + results.length + ' of ' + booths.length + ' booths' + (q || statusQ ? ' (filtered)' : '');
 
     if (results.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="no-results">No booths match.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="3" class="no-results">No booths match.</td></tr>';
       return;
     }
 
-    tbody.innerHTML = results.map((b, ri) => {
-      const gapLabel = b.status === 'stronghold' ? ('+' + Math.abs(b.gap_pct).toFixed(1) + ' cushion') : ('-' + b.gap_pct.toFixed(1));
-      return '<tr class="booth-row" data-booth="' + esc(b.booth_no) + '" data-dup="' + esc(b.dup_label) + '">' +
-        '<td>' + esc(b.booth_no) + '</td>' +
-        '<td>' + highlight(b.polling_station_name, q) + '</td>' +
-        '<td class="streets-cell"><span class="street-list" title="' + esc(b.streets.join('; ')) + '">' + highlight(b.streets.join('; '), q) + '</span></td>' +
-        '<td><span class="status-badge ' + b.status + '">' + statusLabel(b.status) + '</span></td>' +
-        '<td class="num">' + b.tvk_pct.toFixed(1) + '%</td>' +
-        '<td class="num">' + gapLabel + '</td>' +
-        '<td>' + esc(b.leader_name) + (b.leader_party ? ' <span style="color:var(--text-muted);font-size:11px">(' + esc(b.leader_party) + ')</span>' : '') + '</td>' +
-        '<td>' + miniBar(b) + '</td>' +
-      '</tr>' + (openIndex === b.booth_no + '|' + b.dup_label ? renderDetail(b, q) : '');
+    tbody.innerHTML = results.map(b => {
+      const gapLabel = b.status === 'stronghold' ? ('+' + Math.abs(b.gap_pct).toFixed(1) + ' pt cushion') : ('-' + b.gap_pct.toFixed(1) + ' pt gap');
+      const dup = b.dup_label !== b.booth_no ? '<span class="dup">' + esc(b.dup_label.replace(b.booth_no, '').trim()) + '</span>' : '';
+      const streetsHtml = b.streets.map(s => highlight(s, q)).join('; ');
+      return '<tr>' +
+        '<td class="col-station">' +
+          '<div class="booth-title">' + esc(b.booth_no) + ' — ' + highlight(b.polling_station_name, q) + '</div>' + dup +
+          '<div><span class="status-badge ' + b.status + '">' + statusLabel(b.status) + '</span></div>' +
+          '<div class="stat-line">TVK <b>' + b.tvk_pct.toFixed(1) + '%</b> · ' + gapLabel + '<br>Leader: <b>' + esc(b.leader_name) + '</b>' + (b.leader_party ? ' (' + esc(b.leader_party) + ')' : '') + '</div>' +
+        '</td>' +
+        '<td class="col-streets">' + streetsHtml + '</td>' +
+        '<td class="col-chart">' + candidateRowsHtml(b, q) + '</td>' +
+      '</tr>';
     }).join('');
   }
 
-  tbody.addEventListener('click', function(e) {
-    const row = e.target.closest('tr.booth-row');
-    if (!row) return;
-    const key = row.dataset.booth + '|' + row.dataset.dup;
-    openIndex = openIndex === key ? null : key;
-    render();
-  });
-  document.querySelectorAll('table.plan th[data-sort]').forEach(th => {
+  document.querySelectorAll('table.combined th[data-sort]').forEach(th => {
     th.addEventListener('click', function() {
       const key = th.dataset.sort;
       if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
@@ -402,8 +364,8 @@
     });
   });
   let debounceTimer = null;
-  searchInput.addEventListener('input', function() { clearTimeout(debounceTimer); debounceTimer = setTimeout(() => { openIndex = null; render(); }, 90); });
-  statusFilter.addEventListener('change', function() { openIndex = null; render(); });
+  searchInput.addEventListener('input', function() { clearTimeout(debounceTimer); debounceTimer = setTimeout(render, 90); });
+  statusFilter.addEventListener('change', render);
 
   render();
 })();
